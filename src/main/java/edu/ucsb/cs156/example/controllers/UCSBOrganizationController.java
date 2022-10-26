@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @Api(description = "UCSBOrganizations")
-@RequestMapping("/api/ucsborganizations")
+@RequestMapping("/api/ucsborganization")
 @RestController
 @Slf4j
 public class UCSBOrganizationController extends ApiController {
@@ -36,7 +36,7 @@ public class UCSBOrganizationController extends ApiController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<UCSBOrganization> allUCSBOrganizations() {
-        Iterable<UCSBOrganization> orgs = ucsbOrganizationsRepository.findAll();
+        Iterable<UCSBOrganization> orgs = ucsbOrganizationRepository.findAll();
         return orgs;
     }
 
@@ -56,7 +56,7 @@ public class UCSBOrganizationController extends ApiController {
             org.setOrgTranslation(orgTranslation);
             org.setInactive(inactive);
     
-            UCSBOrganization savedOrg = UCSBOrganizationRepository.save(org);
+            UCSBOrganization savedOrg = ucsbOrganizationRepository.save(org);
     
             return savedOrg;
     }
