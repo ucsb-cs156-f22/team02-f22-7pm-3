@@ -85,7 +85,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
                                 .orgCode("SKY")
                                 .orgTranslationShort("SKYDIVING CLUB")
                                 .orgTranslation("SKYDIVING CLUB AT UCSB")
-                                .inactive(false)
+                                .inactive(true)
                                 .build();
 
                 UCSBOrganization krcOrg = UCSBOrganization.builder()
@@ -121,14 +121,14 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
                                 .orgCode("SKY")
                                 .orgTranslationShort("SKYDIVING-CLUB")
                                 .orgTranslation("SKYDIVING-CLUB-AT-UCSB")
-                                .inactive(false)
+                                .inactive(true)
                                 .build();
 
                 when(ucsbOrganizationRepository.save(eq(org))).thenReturn(org);
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/ucsborganization/post?orgCode=SKY&orgTranslationShort=SKYDIVING-CLUB&orgTranslation=SKYDIVING-CLUB-AT-UCSB&inactive=false")
+                                post("/api/ucsborganization/post?orgCode=SKY&orgTranslationShort=SKYDIVING-CLUB&orgTranslation=SKYDIVING-CLUB-AT-UCSB&inactive=true")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
