@@ -210,5 +210,86 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 assertEquals(expectedJson, responseString);
         }
 
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_edit_an_existing_reccomendation() throws Exception {
+                // arrange
+
+                LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+                LocalDateTime ldt2 = LocalDateTime.parse("2023-01-03T00:00:00");
+
+                Recommendation recommendation1 = Recommendation.builder()
+                                .requesterEmail("remail")
+                                .professorEmail("premail")
+                                .explanation("expl")
+                                .dateRequested(ldt1)
+                                .dateNeeded(ldt1)
+								.done(true)
+                                .build();
+
+                Recommendation recommendation2 = Recommendation.builder()
+                                .requesterEmail("remail2")
+                                .professorEmail("premail2")
+                                .explanation("expl2")
+                                .dateRequested(ldt2)
+                                .dateNeeded(ldt2)
+								.done(false)
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(recommendation2);
+
+                when(recommendationRepository.findById(eq(67L))).thenReturn(Optional.of(recommendation1));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/Recommendation?id=67")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(recommendationRepository, times(1)).findById(67L);
+                verify(recommendationRepository, times(1)).save(recommendation2); // should be saved with correct user
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(requestBody, responseString);
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_edit_recommendation_that_does_not_exist() throws Exception {
+                // arrange
+
+                LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+
+                Recommendation recommendation1 = Recommendation.builder()
+                                .requesterEmail("remail")
+                                .professorEmail("premail")
+                                .explanation("expl")
+                                .dateRequested(ldt1)
+                                .dateNeeded(ldt1)
+								.done(true)
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(recommendation1);
+
+                when(recommendationRepository.findById(eq(123L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/Recommendation?id=123")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(recommendationRepository, times(1)).findById(123L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Recommendation with id 123 not found", json.get("message"));
+
+        }
 
 }
