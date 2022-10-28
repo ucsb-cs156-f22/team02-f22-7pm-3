@@ -8,7 +8,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nimbusds.oauth2.sdk.GeneralException;
+
 import java.time.LocalDateTime;
 
+import javax.naming.NameNotFoundException;
 import javax.validation.Valid;
 
 
@@ -98,5 +103,17 @@ public class HelpRequestController extends ApiController {
         helpRequestRepository.save(request);
 
         return request;
+    }
+
+    @ApiOperation(value = "Delete a help request")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteUCSBDate(
+            @ApiParam("id") @RequestParam Long id) {
+        HelpRequest request = helpRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+
+        helpRequestRepository.delete(request);
+        return genericMessage("HelpRequest with id %s deleted".formatted(id));
     }
 }
