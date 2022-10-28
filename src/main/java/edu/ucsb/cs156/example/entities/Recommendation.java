@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "ucsbrecommendation")
+@Entity(name = "recommendation")
 public class Recommendation {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
