@@ -77,11 +77,11 @@ public class HelpRequestController extends ApiController {
 
         return request;
     }
-    
-    @ApiOperation(value = "Update a single date")
+
+    @ApiOperation(value = "Update a single help request")
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("")
-    public HelpRequest updateUCSBDate(
+    public HelpRequest updateHelpRequest(
             @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid HelpRequest incoming) {
 
