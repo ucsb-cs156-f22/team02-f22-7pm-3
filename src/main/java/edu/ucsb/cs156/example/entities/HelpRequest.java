@@ -16,16 +16,16 @@ import lombok.Builder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "menuitemreviews")
-public class MenuItemReview {
+@Entity(name = "helprequests")
+public class HelpRequest {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long itemId;
+  private long id;
 
-  private String reviewerEmail;
-  private int stars; 
-  private LocalDateTime dateReviewed;
-  private String comments; 
+  private String requesterEmail;
+  private String teamId;  
+  private String tableOrBreakoutRoom;
+  private LocalDateTime requestTime;
+  private String explanation;
+  private boolean solved;
 }
-
-
