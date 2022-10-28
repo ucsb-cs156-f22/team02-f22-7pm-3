@@ -40,7 +40,7 @@ public class UCSBOrganizationController extends ApiController {
         return orgs;
     }
 
-    @ApiOperation(value = "Get a single commons")
+    @ApiOperation(value = "Get a single organization")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public UCSBOrganization getById(
