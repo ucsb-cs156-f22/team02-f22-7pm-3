@@ -39,8 +39,8 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         return commons;
     }
 
-    /*
-    @ApiOperation(value = "Get a single commons")
+    
+    @ApiOperation(value = "Get a single menu item")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public UCSBDiningCommonsMenuItem getById(
@@ -50,7 +50,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
 
         return commons;
     }
-    */
+    
 
     @ApiOperation(value = "Create a new menu item")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
