@@ -77,4 +77,26 @@ public class HelpRequestController extends ApiController {
 
         return request;
     }
+    
+    @ApiOperation(value = "Update a single date")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping("")
+    public HelpRequest updateUCSBDate(
+            @ApiParam("id") @RequestParam Long id,
+            @RequestBody @Valid HelpRequest incoming) {
+
+        HelpRequest request = helpRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+
+        request.setRequesterEmail(incoming.getRequesterEmail());
+        request.setTeamId(incoming.getTeamId());
+        request.setTableOrBreakoutRoom(incoming.getTableOrBreakoutRoom());
+        request.setRequestTime(incoming.getRequestTime());
+        request.setExplanation(incoming.getExplanation());
+        request.setSolved(incoming.getSolved());
+
+        helpRequestRepository.save(request);
+
+        return request;
+    }
 }
