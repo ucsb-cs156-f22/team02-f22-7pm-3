@@ -40,36 +40,36 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
         @MockBean
         UserRepository userRepository;
 
-        // Authorization tests for /api/ucsborganization/admin/all
+        // Authorization tests for /api/UCSBOrganization/admin/all
 
         @Test
         public void logged_out_users_cannot_get_all() throws Exception {
-                mockMvc.perform(get("/api/ucsborganization/all"))
+                mockMvc.perform(get("/api/UCSBOrganization/all"))
                                 .andExpect(status().is(403)); // logged out users can't get all
         }
 
         @WithMockUser(roles = { "USER" })
         @Test
         public void logged_in_users_can_get_all() throws Exception {
-                mockMvc.perform(get("/api/ucsborganization/all"))
+                mockMvc.perform(get("/api/UCSBOrganization/all"))
                                 .andExpect(status().is(200)); // logged
         }
 
         
 
-        // Authorization tests for /api/ucsborganization/post
+        // Authorization tests for /api/UCSBOrganization/post
         // (Perhaps should also have these for put and delete)
 
         @Test
         public void logged_out_users_cannot_post() throws Exception {
-                mockMvc.perform(post("/api/ucsborganization/post"))
+                mockMvc.perform(post("/api/UCSBOrganization/post"))
                                 .andExpect(status().is(403));
         }
 
         @WithMockUser(roles = { "USER" })
         @Test
         public void logged_in_regular_users_cannot_post() throws Exception {
-                mockMvc.perform(post("/api/ucsborganization/post"))
+                mockMvc.perform(post("/api/UCSBOrganization/post"))
                                 .andExpect(status().is(403)); // only admins can post
         }
 
@@ -101,7 +101,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
                 when(ucsbOrganizationRepository.findAll()).thenReturn(expectedOrgs);
 
                 // act
-                MvcResult response = mockMvc.perform(get("/api/ucsborganization/all"))
+                MvcResult response = mockMvc.perform(get("/api/UCSBOrganization/all"))
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
@@ -128,7 +128,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/ucsborganization/post?orgCode=SKY&orgTranslationShort=SKYDIVING-CLUB&orgTranslation=SKYDIVING-CLUB-AT-UCSB&inactive=true")
+                                post("/api/UCSBOrganization/post?orgCode=SKY&orgTranslationShort=SKYDIVING-CLUB&orgTranslation=SKYDIVING-CLUB-AT-UCSB&inactive=true")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
