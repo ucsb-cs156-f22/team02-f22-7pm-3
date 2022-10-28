@@ -74,7 +74,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         return savedCommons;
     }
 
-    /*
+    
     @ApiOperation(value = "Delete a UCSBDiningCommonsMenuItem")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
@@ -86,7 +86,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         ucsbDiningCommonsMenuItemRepository.delete(commons);
         return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
     }
-    */
+    
 
     
     @ApiOperation(value = "Update a single commons")
