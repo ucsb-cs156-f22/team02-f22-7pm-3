@@ -43,9 +43,9 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public UCSBDiningCommonsMenuItem getById(
-            @ApiParam("diningCommonsCode") @RequestParam String diningCommonsCode) {
-        UCSBDiningCommonsMenuItem commons = ucsbDiningCommonsMenuItemRepository.findById(diningCommonsCode)
-                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, diningCommonsCode));
+            @ApiParam("id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem commons = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
 
         return commons;
     }
@@ -54,6 +54,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBDiningCommonsMenuItem postCommons(
+        @ApiParam("id") @RequestParam Long id,
         @ApiParam("diningCommonsCode") @RequestParam String diningCommonsCode,
         @ApiParam("name") @RequestParam String name,
         @ApiParam("station") @RequestParam String station
@@ -61,6 +62,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         {
 
         UCSBDiningCommonsMenuItem commons = new UCSBDiningCommonsMenuItem();
+        commons.setId(id);
         commons.setDiningCommonsCode(diningCommonsCode);
         commons.setName(name);
         commons.setStation(station);
@@ -74,23 +76,23 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public Object deleteCommons(
-            @ApiParam("diningCommonsCode") @RequestParam String diningCommonsCode) {
-        UCSBDiningCommonsMenuItem commons = ucsbDiningCommonsMenuItemRepository.findById(diningCommonsCode)
-                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommons.class, diningCommonsCode));
+            @ApiParam("id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem commons = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
 
         ucsbDiningCommonsMenuItemRepository.delete(commons);
-        return genericMessage("UCSBDiningCommons with id %s deleted".formatted(diningCommonsCode));
+        return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
     }
 
     @ApiOperation(value = "Update a single commons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
     public UCSBDiningCommonsMenuItem updateCommons(
-            @ApiParam("diningCommonsCode") @RequestParam String diningCommonsCode,
+            @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
 
-        UCSBDiningCommonsMenuItem commons = ucsbDiningCommonsMenuItemRepository.findById(diningCommonsCode)
-                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, diningCommonsCode));
+        UCSBDiningCommonsMenuItem commons = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
 
 
         commons.setName(incoming.getName());  
