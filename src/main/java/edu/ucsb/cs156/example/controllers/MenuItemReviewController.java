@@ -44,6 +44,7 @@ public class MenuItemReviewController extends ApiController {
         return reviews;
     }
 
+    // GET single item
     @ApiOperation(value = "Get a single menu item review")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
