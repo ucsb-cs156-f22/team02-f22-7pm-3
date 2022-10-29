@@ -309,5 +309,4 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
                 assertEquals("UCSBOrganization with id OSLI not found", json.get("message"));
 
         }
-
 }
