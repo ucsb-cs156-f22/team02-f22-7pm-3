@@ -43,6 +43,19 @@ public class RecommendationController extends ApiController {
         return recommendations;
     }
 
+
+    @ApiOperation(value = "Get a single recommendation")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public Recommendation getById(
+            @ApiParam("id") @RequestParam Long id) {
+        Recommendation recommendation = recommendationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
+
+        return recommendation;
+    }
+
+
     @ApiOperation(value = "Create a new recommendation request")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -71,6 +84,40 @@ public class RecommendationController extends ApiController {
         Recommendation savedRecommendationn = recommendationRepository.save(recommendation);
 
         return savedRecommendationn;
+    }
+
+
+    @ApiOperation(value = "Delete a recommendation request")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteRecommendation(
+            @ApiParam("id") @RequestParam Long id) {
+        Recommendation recommendation = recommendationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
+
+        recommendationRepository.delete(recommendation);
+        return genericMessage("Recommendation Request with id %s deleted".formatted(id));
+    }
+
+    @ApiOperation(value = "Update a single recommendation request")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public Recommendation updateRecommendation(
+            @ApiParam("id") @RequestParam Long id,
+            @RequestBody @Valid Recommendation incoming) {
+
+        Recommendation recommendation = recommendationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
+
+        recommendation.setRequesterEmail(incoming.getRequesterEmail());
+        recommendation.setProfessorEmail(incoming.getProfessorEmail());
+        recommendation.setExplanation(incoming.getExplanation());
+        recommendation.setDateRequested(incoming.getDateRequested());
+        recommendation.setDateNeeded(incoming.getDateNeeded());
+        recommendation.setDone(incoming.getDone());
+        recommendationRepository.save(recommendation);
+
+        return recommendation;
     }
 
 }
