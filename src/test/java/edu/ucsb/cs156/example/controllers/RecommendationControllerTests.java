@@ -59,11 +59,13 @@ public class RecommendationControllerTests extends ControllerTestCase {
                                 .andExpect(status().is(200)); // logged
         }
 
+
         @Test
         public void logged_out_users_cannot_get_by_id() throws Exception {
                 mockMvc.perform(get("/api/Recommendation?id=7"))
                                 .andExpect(status().is(403)); // logged out users can't get by id
         }
+
         // Authorization tests for /api/Recommendation/post
         // (Perhaps should also have these for put and delete)
 
@@ -127,6 +129,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
+
 
         @WithMockUser(roles = { "USER" })
         @Test
@@ -230,6 +233,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 assertEquals("Recommendation with id 15 not found", json.get("message"));
         }
 
+
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
         public void an_admin_user_can_post_a_new_recommendation() throws Exception {
@@ -261,6 +265,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
+
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
