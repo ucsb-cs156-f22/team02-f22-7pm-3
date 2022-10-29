@@ -44,6 +44,18 @@ public class MenuItemReviewController extends ApiController {
         return reviews;
     }
 
+    // GET single review
+    @ApiOperation(value = "Get a single menu item review")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public MenuItemReview getById(
+            @ApiParam("id") @RequestParam Long id) {
+        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
+        return menuItemReview;
+    }
+
     // POST
     @ApiOperation(value = "Create a new review")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
