@@ -55,4 +55,13 @@ public class ArticleController extends ApiController {
                         .dateAdded(dateAdded)
                         .build());
     }
+
+    @ApiOperation(value = "Retrieve an article by its ID.")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public Article getById(
+            @ApiParam("id") @RequestParam Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Article.class, id));
+    }
 }
