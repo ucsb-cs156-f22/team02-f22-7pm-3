@@ -33,7 +33,6 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
 
 
     @ApiOperation(value = "List all menu items")
-
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<UCSBDiningCommonsMenuItem> allCommons() {
@@ -44,7 +43,6 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
 
     
     @ApiOperation(value = "Get a single menu item")
-
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public UCSBDiningCommonsMenuItem getById(
@@ -54,9 +52,6 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
 
         return commons;
     }
-
-    
-
 
     @ApiOperation(value = "Create a new menu item")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -80,7 +75,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         return savedCommons;
     }
 
-    /*
+
     @ApiOperation(value = "Delete a UCSBDiningCommonsMenuItem")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
@@ -92,10 +87,6 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         ucsbDiningCommonsMenuItemRepository.delete(commons);
         return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
     }
-    */
-
-
-    
 
     @ApiOperation(value = "Update a single commons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
