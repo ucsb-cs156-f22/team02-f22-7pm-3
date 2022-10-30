@@ -200,6 +200,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
 								.done(true)
                                 .build();
 
+
                 when(recommendationRepository.findById(eq(123L))).thenReturn(Optional.of(recommendation1));
 
                 // act
@@ -209,11 +210,13 @@ public class RecommendationControllerTests extends ControllerTestCase {
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
+
                 verify(recommendationRepository, times(1)).findById(123L);
                 verify(recommendationRepository, times(1)).delete(any());
 
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("Recommendation Request with id 123 deleted", json.get("message"));
+
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
