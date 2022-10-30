@@ -40,6 +40,17 @@ public class UCSBOrganizationController extends ApiController {
         return orgs;
     }
 
+    @ApiOperation(value = "Get a single organization")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public UCSBOrganization getById(
+            @ApiParam("id") @RequestParam String id) {
+        UCSBOrganization org = ucsbOrganizationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, id));
+
+        return org;
+    }
+
     @ApiOperation(value = "Create a new organization")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -59,5 +70,37 @@ public class UCSBOrganizationController extends ApiController {
             UCSBOrganization savedOrg = ucsbOrganizationRepository.save(org);
     
             return savedOrg;
+    }
+
+    @ApiOperation(value = "Delete an organization")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteOrganization(
+            @ApiParam("id") @RequestParam String id) {
+        UCSBOrganization org = ucsbOrganizationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, id));
+
+        ucsbOrganizationRepository.delete(org);
+        return genericMessage("UCSBOrganization with id %s deleted".formatted(id));
+    }
+
+    @ApiOperation(value = "Update a single organization")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBOrganization updateOrganization(
+            @ApiParam("id") @RequestParam String id,
+            @RequestBody @Valid UCSBOrganization incoming) {
+
+            UCSBOrganization org = ucsbOrganizationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, id));
+
+
+        org.setInactive(incoming.getInactive());  
+        org.setOrgTranslation(incoming.getOrgTranslation());
+        org.setOrgTranslationShort(incoming.getOrgTranslationShort());
+
+        ucsbOrganizationRepository.save(org);
+
+        return org;
     }
 }

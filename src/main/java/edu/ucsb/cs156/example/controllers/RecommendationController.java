@@ -43,6 +43,7 @@ public class RecommendationController extends ApiController {
         return recommendations;
     }
 
+
     @ApiOperation(value = "Get a single recommendation")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
@@ -53,6 +54,7 @@ public class RecommendationController extends ApiController {
 
         return recommendation;
     }
+
 
     @ApiOperation(value = "Create a new recommendation request")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -83,6 +85,7 @@ public class RecommendationController extends ApiController {
 
         return savedRecommendationn;
     }
+
 
     @ApiOperation(value = "Delete a recommendation request")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -116,4 +119,5 @@ public class RecommendationController extends ApiController {
 
         return recommendation;
     }
+
 }
