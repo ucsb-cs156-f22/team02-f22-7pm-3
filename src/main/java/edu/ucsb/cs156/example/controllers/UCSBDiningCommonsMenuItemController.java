@@ -31,6 +31,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @Autowired
     UCSBDiningCommonsMenuItemRepository ucsbDiningCommonsMenuItemRepository;
 
+
     @ApiOperation(value = "List all menu items")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
@@ -38,6 +39,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         Iterable<UCSBDiningCommonsMenuItem> commons = ucsbDiningCommonsMenuItemRepository.findAll();
         return commons;
     }
+
 
     
     @ApiOperation(value = "Get a single menu item")
@@ -50,7 +52,6 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
 
         return commons;
     }
-    
 
     @ApiOperation(value = "Create a new menu item")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -74,7 +75,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         return savedCommons;
     }
 
-    
+
     @ApiOperation(value = "Delete a UCSBDiningCommonsMenuItem")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
@@ -86,9 +87,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         ucsbDiningCommonsMenuItemRepository.delete(commons);
         return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
     }
-    
 
-    
     @ApiOperation(value = "Update a single commons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
@@ -99,6 +98,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         UCSBDiningCommonsMenuItem commons = ucsbDiningCommonsMenuItemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
 
+
         commons.setDiningCommonsCode(incoming.getDiningCommonsCode());
         commons.setName(incoming.getName());  
         commons.setStation(incoming.getStation());
@@ -108,5 +108,4 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
 
         return commons;
     }
-    
 }
