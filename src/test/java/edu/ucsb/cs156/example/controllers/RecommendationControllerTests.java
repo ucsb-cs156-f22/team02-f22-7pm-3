@@ -137,18 +137,20 @@ public class RecommendationControllerTests extends ControllerTestCase {
 
                 // arrange
 
-                when(recommendationRepository.findById(eq(7L))).thenReturn(Optional.empty());
+                when(recommendationRepository.findById(eq(123L))).thenReturn(Optional.empty());
 
                 // act
-                MvcResult response = mockMvc.perform(get("/api/Recommendation?id=7"))
+                MvcResult response = mockMvc.perform(get("/api/Recommendation?id=123"))
+
                                 .andExpect(status().isNotFound()).andReturn();
 
                 // assert
 
-                verify(recommendationRepository, times(1)).findById(eq(7L));
+                verify(recommendationRepository, times(1)).findById(eq(123L));
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("EntityNotFoundException", json.get("type"));
-                assertEquals("Recommendation with id 7 not found", json.get("message"));
+                assertEquals("Recommendation with id 123 not found", json.get("message"));
+
         }
 
         @WithMockUser(roles = { "USER" })
@@ -180,6 +182,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
+
 		//Testing delete
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
@@ -234,6 +237,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
         }
 
 
+
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
         public void an_admin_user_can_post_a_new_recommendation() throws Exception {
@@ -265,6 +269,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
+
 
 
         @WithMockUser(roles = { "ADMIN", "USER" })

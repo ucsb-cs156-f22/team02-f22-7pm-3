@@ -87,6 +87,7 @@ public class RecommendationController extends ApiController {
     }
 
 
+
     @ApiOperation(value = "Delete a recommendation request")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
@@ -119,5 +120,6 @@ public class RecommendationController extends ApiController {
 
         return recommendation;
     }
+
 
 }
