@@ -145,7 +145,6 @@ public class RecommendationControllerTests extends ControllerTestCase {
 
                 // assert
 
-
                 verify(recommendationRepository, times(1)).findById(eq(123L));
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("EntityNotFoundException", json.get("type"));
@@ -200,6 +199,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
 								.done(true)
                                 .build();
 
+
                 when(recommendationRepository.findById(eq(123L))).thenReturn(Optional.of(recommendation1));
 
                 // act
@@ -209,11 +209,13 @@ public class RecommendationControllerTests extends ControllerTestCase {
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
+
                 verify(recommendationRepository, times(1)).findById(123L);
                 verify(recommendationRepository, times(1)).delete(any());
 
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("Recommendation Request with id 123 deleted", json.get("message"));
+
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
@@ -235,6 +237,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("Recommendation with id 15 not found", json.get("message"));
         }
+
 
 
         @WithMockUser(roles = { "ADMIN", "USER" })
