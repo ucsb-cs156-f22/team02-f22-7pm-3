@@ -223,5 +223,4 @@ public class HelpRequestControllerTests extends ControllerTestCase {
                 assertEquals("EntityNotFoundException", json.get("type"));
                 assertEquals("HelpRequest with id 7 not found", json.get("message"));
         }
-
 }
