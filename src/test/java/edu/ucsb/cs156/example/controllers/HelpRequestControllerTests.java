@@ -357,5 +357,4 @@ public class HelpRequestControllerTests extends ControllerTestCase {
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("HelpRequest with id 15 not found", json.get("message"));
         }
-
 }
