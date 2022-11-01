@@ -1,7 +1,6 @@
 package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.Article;
-import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.repositories.ArticleRepository;
 import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
@@ -202,15 +201,15 @@ public class ArticleControllerTests extends ControllerTestCase {
             .title("Oski vs Ole")
             .explanation("Oski and Ole show down!")
             .url("https://example.com/oski-ole")
-            .email("mapache@raccoon.islavista")
-            .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
+            .email("mapache1@raccoon.islavista")
+            .dateAdded(LocalDateTime.parse("2022-01-02T00:00:00"))
             .build();
     Article edited = Article.builder()
             .id(18L)
             .title("Ole vs Triton")
             .explanation("Triton and Ole face off!")
             .url("https://example.com/triton-ole")
-            .email("mapache@raccoon.islavista")
+            .email("roadrunner@raccoon.islavista")
             .dateAdded(LocalDateTime.parse("2022-03-11T00:00:00"))
             .build();
 
@@ -235,7 +234,7 @@ public class ArticleControllerTests extends ControllerTestCase {
 
   @WithMockUser(roles = { "ADMIN", "USER" })
   @Test
-  public void admin_cannot_edit_ucsbdate_that_does_not_exist() throws Exception {
+  public void admin_cannot_edit_article_that_does_not_exist() throws Exception {
      Article edited = Article.builder()
              .id(67L)
             .title("Oski vs Ole")
@@ -262,7 +261,54 @@ public class ArticleControllerTests extends ControllerTestCase {
     verify(articleRepository, times(1)).findById(67L);
     Map<String, Object> json = responseToJson(response);
     assertEquals("Article with id 67 not found", json.get("message"));
+  }
 
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_delete_a_article() throws Exception {
+    Article article = Article.builder()
+            .id(15L)
+            .title("Oski vs Ole")
+            .explanation("Oski and Ole show down!")
+            .url("https://example.com/oski-ole")
+            .email("mapache@raccoon.islavista")
+            .dateAdded(LocalDateTime.parse("2022-01-03T00:00:00"))
+            .build();
+
+    when(articleRepository.findById(eq(15L))).thenReturn(Optional.of(article));
+
+    // act
+    MvcResult response = mockMvc.perform(
+                    delete("/api/Article?id=15")
+                            .with(csrf()))
+            .andExpect(status().isOk()).andReturn();
+
+    // assert
+    verify(articleRepository, times(1)).findById(15L);
+    verify(articleRepository, times(1)).delete(any());
+
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("Article with id 15 deleted", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_tries_to_delete_nonexistent_article_and_gets_right_error_message()
+          throws Exception {
+    // arrange
+
+    when(articleRepository.findById(eq(15L))).thenReturn(Optional.empty());
+
+    // act
+    MvcResult response = mockMvc.perform(
+                    delete("/api/Article?id=15")
+                            .with(csrf()))
+            .andExpect(status().isNotFound()).andReturn();
+
+    // assert
+    verify(articleRepository, times(1)).findById(15L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("Article with id 15 not found", json.get("message"));
   }
 
 }
