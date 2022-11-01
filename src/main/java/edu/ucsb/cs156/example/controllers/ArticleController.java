@@ -64,4 +64,25 @@ public class ArticleController extends ApiController {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Article.class, id));
     }
+
+    @ApiOperation(value = "Update an article by its ID.")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public Article updateArticle(
+            @ApiParam("id") @RequestParam Long id,
+            @RequestBody @Valid Article incoming) {
+
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Article.class, id));
+        article.setTitle(incoming.getTitle());
+        article.setEmail(incoming.getEmail());
+        article.setUrl(incoming.getUrl());
+        article.setExplanation(incoming.getExplanation());
+        article.setDateAdded(incoming.getDateAdded());
+
+
+        articleRepository.save(article);
+
+        return article;
+    }
 }
